@@ -13,13 +13,13 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3  # Updated version
+        uses: actions/checkout@v4  # Latest version
 
       - name: Set up Python
-        uses: actions/setup-python@v4  # Updated version
+        uses: actions/setup-python@v5  # Latest version
         with:
           python-version: '3.13'
-          cache: 'pip'  # Enable pip caching
+          cache: 'pip'
 
       - name: Create directories
         run: |
@@ -43,7 +43,6 @@ jobs:
         run: |
           wget https://raw.githubusercontent.com/vncorenlp/VnCoreNLP/master/VnCoreNLP-1.1.1.jar
           chmod +x VnCoreNLP-1.1.1.jar
-          java -jar VnCoreNLP-1.1.1.jar -v
 
       - name: Set up credentials
         run: |
@@ -62,14 +61,16 @@ jobs:
         continue-on-error: true
 
       - name: Upload logs
-        if: always()  # Run even if previous step fails
-        uses: actions/upload-artifact@v3  # Updated version
+        if: always()
+        uses: actions/upload-artifact@v4  # Updated to v4
         with:
           name: processing-logs-${{ github.run_number }}
           path: |
             logs/
             temp/
           retention-days: 7
+          compression-level: 9  # Maximum compression
+          overwrite: true
 
       - name: Cleanup
         if: always()
