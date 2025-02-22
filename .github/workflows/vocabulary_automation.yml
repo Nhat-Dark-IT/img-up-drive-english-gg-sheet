@@ -3,13 +3,13 @@ name: Vocabulary Processing Automation
 
 on:
   schedule:
-    - cron: '*/30 * * * *'  # Every 30 minutes
+    - cron: '0 */5 * * *'  # Every 30 minutes
   workflow_dispatch:  # Manual trigger
 
 jobs:
   process-vocabulary:
     runs-on: ubuntu-latest
-    timeout-minutes: 15  # Prevent hanging jobs
+    timeout-minutes: 120  # Prevent hanging jobs
 
     steps:
       - name: Checkout repository
