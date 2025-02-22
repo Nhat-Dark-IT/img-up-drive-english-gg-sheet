@@ -10,3 +10,7 @@ credentials/
 
 # VS Code
 .vscode/
+# Thêm vào .gitignore
+credentials/
+.env
+*.json

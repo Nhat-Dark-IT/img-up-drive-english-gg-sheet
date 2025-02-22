@@ -44,14 +44,30 @@ jobs:
           wget https://raw.githubusercontent.com/vncorenlp/VnCoreNLP/master/VnCoreNLP-1.1.1.jar
           chmod +x VnCoreNLP-1.1.1.jar
 
+        # .github/workflows/vocabulary_automation.yml
       - name: Set up credentials
         run: |
-          echo "${{ secrets.GOOGLE_CREDENTIALS }}" > credentials/credentials.json
-          echo "GOOGLE_DRIVE_FOLDER_ID=${{ secrets.GOOGLE_DRIVE_FOLDER_ID }}" >> .env
-          echo "GOOGLE_SHEETS_ID=${{ secrets.GOOGLE_SHEETS_ID }}" >> .env
-          echo "TESSERACT_PATH=/usr/bin/tesseract" >> .env
-          echo "API_KEY_GEMINI=${{ secrets.API_KEY_GEMINI }}" >> .env
+            # Tạo file credentials.json với nội dung được escape đúng
+            echo '${{ secrets.GOOGLE_CREDENTIALS }}' > credentials/credentials.json
+            # Kiểm tra nội dung file
+            cat credentials/credentials.json
+            # Thiết lập các biến môi trường khác
+            echo "GOOGLE_DRIVE_FOLDER_ID=${{ secrets.GOOGLE_DRIVE_FOLDER_ID }}" >> .env
+            echo "GOOGLE_SHEETS_ID=${{ secrets.GOOGLE_SHEETS_ID }}" >> .env
+            echo "TESSERACT_PATH=/usr/bin/tesseract" >> .env
+            echo "API_KEY_GEMINI=${{ secrets.API_KEY_GEMINI }}" >> .env
         
+      - name: Set permissions
+        run: chmod 600 credentials/credentials.json
+        
+      - name: Verify credentials
+        run: |
+            python -c "
+            import json
+            with open('credentials/credentials.json') as f:
+                json.load(f)
+            print('✓ Credentials JSON is valid')
+            "
       - name: Run automation script
         id: run-script
         run: |

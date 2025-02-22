@@ -7,19 +7,22 @@ from dotenv import load_dotenv
 load_dotenv()
 
 def get_google_service(service_name, version='v3'):
-    """Create and return Google service object."""
-    credentials = service_account.Credentials.from_service_account_file(
-        os.getenv('GOOGLE_APPLICATION_CREDENTIALS'),
-        scopes=[
-            'https://www.googleapis.com/auth/drive',  # Full Drive access
-            'https://www.googleapis.com/auth/drive.file',
-            'https://www.googleapis.com/auth/drive.metadata',
-            'https://www.googleapis.com/auth/spreadsheets'
-        ]
-    )
-    
-    return build(service_name, version, credentials=credentials)
-
+    try:
+        """Create and return Google service object."""
+        credentials = service_account.Credentials.from_service_account_file(
+            os.getenv('GOOGLE_APPLICATION_CREDENTIALS'),
+            scopes=[
+                'https://www.googleapis.com/auth/drive',  # Full Drive access
+                'https://www.googleapis.com/auth/drive.file',
+                'https://www.googleapis.com/auth/drive.metadata',
+                'https://www.googleapis.com/auth/spreadsheets'
+            ]
+        )
+        
+        return build(service_name, version, credentials=credentials)
+    except Exception as e:
+        print(f"Error loading credentials: {str(e)}")
+        raise
 def test_connection():
     """Test connection to Google services."""
     try:
