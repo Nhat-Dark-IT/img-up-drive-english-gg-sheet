@@ -1,0 +1,78 @@
+# .github/workflows/vocabulary_automation.yml
+name: Vocabulary Processing Automation
+
+on:
+  schedule:
+    - cron: '*/30 * * * *'  # Every 30 minutes
+  workflow_dispatch:  # Manual trigger
+
+jobs:
+  process-vocabulary:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15  # Prevent hanging jobs
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3  # Updated version
+
+      - name: Set up Python
+        uses: actions/setup-python@v4  # Updated version
+        with:
+          python-version: '3.13'
+          cache: 'pip'  # Enable pip caching
+
+      - name: Create directories
+        run: |
+          mkdir -p credentials
+          mkdir -p logs
+          mkdir -p temp
+          chmod -R 777 temp logs
+
+      - name: Install Tesseract
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y tesseract-ocr tesseract-ocr-eng tesseract-ocr-vie
+          tesseract --version
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+        
+      - name: Download VnCoreNLP
+        run: |
+          wget https://raw.githubusercontent.com/vncorenlp/VnCoreNLP/master/VnCoreNLP-1.1.1.jar
+          chmod +x VnCoreNLP-1.1.1.jar
+          java -jar VnCoreNLP-1.1.1.jar -v
+
+      - name: Set up credentials
+        run: |
+          echo "${{ secrets.GOOGLE_CREDENTIALS }}" > credentials/credentials.json
+          echo "GOOGLE_DRIVE_FOLDER_ID=${{ secrets.GOOGLE_DRIVE_FOLDER_ID }}" >> .env
+          echo "GOOGLE_SHEETS_ID=${{ secrets.GOOGLE_SHEETS_ID }}" >> .env
+          echo "TESSERACT_PATH=/usr/bin/tesseract" >> .env
+          echo "API_KEY_GEMINI=${{ secrets.API_KEY_GEMINI }}" >> .env
+        
+      - name: Run automation script
+        id: run-script
+        run: |
+          python main.py
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: credentials/credentials.json
+        continue-on-error: true
+
+      - name: Upload logs
+        if: always()  # Run even if previous step fails
+        uses: actions/upload-artifact@v3  # Updated version
+        with:
+          name: processing-logs-${{ github.run_number }}
+          path: |
+            logs/
+            temp/
+          retention-days: 7
+
+      - name: Cleanup
+        if: always()
+        run: |
+          rm -rf temp/*
+          rm -rf credentials/*

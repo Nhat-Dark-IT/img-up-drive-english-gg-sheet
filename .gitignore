@@ -1,0 +1,12 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+
+# Credentials
+credentials/
+.env
+
+# VS Code
+.vscode/
