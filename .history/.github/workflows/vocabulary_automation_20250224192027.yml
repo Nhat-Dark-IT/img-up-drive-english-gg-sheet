@@ -3,7 +3,7 @@ name: Vocabulary Processing Automation
 
 on:
   schedule:
-    - cron: '0 */3 * * *'  # Every 30 minutes
+    - cron: '0 */5 * * *'  # Every 30 minutes
   workflow_dispatch:  # Manual trigger
 
 jobs:
