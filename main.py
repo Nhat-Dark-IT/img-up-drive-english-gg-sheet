@@ -125,7 +125,7 @@ class VocabularyAutomation:
             
             # Kiểm tra file tồn tại
             if not os.path.exists(enhanced_path):
-                print(f"Enhanced text file not found: {enhanced_path}")
+                print(f"⚠️ Enhanced text file not found: {enhanced_path}")
                 return None
                 
             # Đọc nội dung file
@@ -135,27 +135,40 @@ class VocabularyAutomation:
             # Parse từng dòng thành entries
             vocab_entries = []
             for line in lines:
+                if not line.strip():
+                    continue
+                    
+                # Split by tab
                 parts = line.strip().split('\t')
                 
-                # Đảm bảo danh sách có đúng 6 phần tử (các phần tử thiếu sẽ là rỗng)
-                while len(parts) < 6:
+                # Đảm bảo đủ 4 phần tử
+                while len(parts) < 4:
                     parts.append('')
-                
+                    
+                # Create entry với các trường mặc định nếu thiếu
                 entry = {
                     'image_name': image_name,
-                    'title': parts[0],
-                    'word': parts[1], 
-                    'ipa': parts[2],
-                    'vn_meaning': parts[3],
-                    'en_meaning': parts[4],
-                    'synonyms': parts[5]
+                    'title': parts[0].strip() or 'Undefined',  # Giá trị mặc định nếu trống
+                    'word': parts[1].strip() or 'Unknown',     # Giá trị mặc định nếu trống
+                    'vn_meaning': parts[2].strip() or 'Chưa có nghĩa',  # Giá trị mặc định nếu trống
+                    'en_meaning': parts[3].strip() or 'No meaning'      # Giá trị mặc định nếu trống
                 }
+                
+                # Log warning nếu thiếu thông tin
+                missing_fields = []
+                if not parts[1].strip(): missing_fields.append('word')
+                if not parts[2].strip(): missing_fields.append('vn_meaning') 
+                if not parts[3].strip(): missing_fields.append('en_meaning')
+                
+                if missing_fields:
+                    print(f"⚠️ Missing fields {missing_fields} in entry: {line}")
+                
                 vocab_entries.append(entry)
                     
-            return vocab_entries
+            return vocab_entries if vocab_entries else None
             
         except Exception as e:
-            print(f"Error parsing vocabulary: {str(e)}")
+            print(f"❌ Error parsing vocabulary: {str(e)}")
             return None
     
     def run_job(self):

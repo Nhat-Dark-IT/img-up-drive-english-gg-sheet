@@ -90,10 +90,8 @@ class SheetsHandler:
                     item.get('image_name', ''),
                     item.get('title', ''),
                     item.get('word', ''),
-                    item.get('ipa', ''),
                     item.get('vn_meaning', ''),
                     item.get('en_meaning', ''),
-                    item.get('synonyms', '')
                 ]
                 rows.append(row)
                 next_number += 1
@@ -150,10 +148,8 @@ class SheetsHandler:
                     item.get('image_name', ''),
                     item.get('title', ''),
                     item.get('word', ''),
-                    item.get('ipa', ''),
                     item.get('vn_meaning', ''),
                     item.get('en_meaning', ''),
-                    item.get('synonyms', '')
                 ]
                 rows.append(row)
                 next_number += 1
@@ -271,10 +267,8 @@ def test_sheets_handler():
             'image_name': 'test_image.jpg',
             'title': 'STUDY4',
             'word': 'example',
-            'ipa': '/ɪɡˈzæmpəl/',
             'vn_meaning': 'ví dụ',
             'en_meaning': 'a representative form',
-            'synonyms': 'instance, sample'
         }]
 
         # Test các loại sheet

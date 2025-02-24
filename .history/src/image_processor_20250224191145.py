@@ -90,8 +90,7 @@ class ImageProcessor:
         - Bổ sung nghĩa còn thiếu dựa trên nghĩa đã có
         - Sửa lỗi chính tả và ngữ pháp
         - Đảm bảo có đủ cả nghĩa Việt và Anh
-        - Nếu thiếu nghĩa -> bổ sung dựa trên nghĩa đã có
-        
+
         Định dạng đầu ra:
         Chủ đề | Từ vựng | Nghĩa tiếng Việt | Nghĩa tiếng Anh
 
@@ -122,8 +121,7 @@ class ImageProcessor:
         6. KHÔNG giữ từ có ký tự đặc biệt
         7. KHÔNG giữ từ không hợp lệ/không có nghĩa
         8. Với từ có "=", giữ nguyên cấu trúc
-        9. KHÔNG giữ từ có ký tự đặc biệt
-        10. Nếu thiếu nghĩa -> Bổ sung dựa trên nghĩa đã có
+        5. KHÔNG giữ từ có ký tự đặc biệt
         """
 
 

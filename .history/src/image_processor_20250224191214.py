@@ -90,8 +90,7 @@ class ImageProcessor:
         - Bổ sung nghĩa còn thiếu dựa trên nghĩa đã có
         - Sửa lỗi chính tả và ngữ pháp
         - Đảm bảo có đủ cả nghĩa Việt và Anh
-        - Nếu thiếu nghĩa -> bổ sung dựa trên nghĩa đã có
-        
+
         Định dạng đầu ra:
         Chủ đề | Từ vựng | Nghĩa tiếng Việt | Nghĩa tiếng Anh
 

@@ -1,0 +1,6 @@
+bearout=confirm:xacnhan
+bringin=introduce:gidithigu
+gearupfor=preparefor:chudnbj
+pairupwith=teamupwith:hgptac
+cutdown=reduce:catgiam
+lookbackon=remember:nhdlai
